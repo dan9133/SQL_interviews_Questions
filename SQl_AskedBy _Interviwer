@@ -1,0 +1,118 @@
+1 -- 1 Write an SQL query to retrieve the names and total amounts spent by customers who have made at least two orders, 
+-- along with the number of orders they’ve made
+
+select * from customers
+select * from orders
+select c.firstName,c.lastName,
+count(o.CustomeId) as number_order.sum(o.total_amount)
+as total_amont_spent
+from Customers c
+join Orders o on c.customerID=o.customerId
+group by c.CustomerId
+having Count(o.CustomerId)>=2;
+
+-- Question 2: Consider a table named Products
+-- Columns: ProductID (Primary Key), ProductName, Category, Price
+Write an SQL query to find the average price of products in each category, along with the total
+ number of products in that category.
+
+
+select category, avg(price)as Avg_price,
+count(*) as Total_prducts
+from products
+group by category;
+
+Question 3: You have a table named Employees:
+
+Columns: EmployeeID (Primary Key), FirstName, LastName, Department, Salary
+Write an SQL query to find the top 5 earning employees in each department.
+
+ Select e1.department,firstName,lastName,salary
+ from Employees e1
+ where 5 > (
+ select count(distinct(e2.salary)
+ from Employees e2
+ where e2.department=e1.department and 
+ e2.salary>e1.salary
+ );
+ 
+ #4 Suppose you have a table named Employees with columns: EmployeeID, FirstName, LastName,
+ 
+ and Department. Write an SQL query to retrieve the employees who have the same first
+ names and are in the same department.
+
+ Select
+ e1.empId,e1.firstname,e1.lastname,e1.department
+ from Employees e1
+
+ join employees e2 on e1.Firstname=e2.firstname and 
+ e1.empId<> e2.EmpID
+ and e1.department=e2.department;
+ 
+ #5 Given a table named Orders with columns: OrderID, OrderDate, and TotalAmount, 
+ write an SQL query to find the date with the highest total amount of orders.
+ 
+ select orderdate,sum(TotalAmount) as total from
+ orders
+ group by orderdate
+ order by total desc  limit 1;
+ 
+ # 6 Consider a table named Books with columns: BookID, Title, AuthorID, and PublicationYear,
+ and a table named Authors with columns: AuthorID, FirstName, and LastName.
+ Write an SQL query to retrieve the top 3 authors with the highest average publication years.
+
+
+ SELECT a.AuthorID, a.FirstName, a.LastName, AVG(b.PublicationYear) AS AvgPublicationYear 
+FROM Authors a 
+JOIN Books b ON a.AuthorID = b.AuthorID 
+GROUP BY a.AuthorID, a.FirstName, a.LastName 
+ORDER BY AvgPublicationYear DESC 
+LIMIT 3;
+
+#7 Suppose you have a table named Transactions with columns: TransactionID, UserID, 
+TransactionDate, and Amount. Write an SQL query to find the UserID of the user
+ who made the highest total amount of transactions.
+
+
+SELECT UserID 
+FROM Transactions 
+GROUP BY UserID 
+ORDER BY SUM(Amount) 
+DESC LIMIT 1;
+
+# 8 Given a table named Logs with columns: LogID, UserID, and Activity, 
+write an SQL query to find the UserID that has performed all possible activities.
+
+SELECT UserID 
+FROM Logs 
+GROUP BY UserID 
+HAVING COUNT(DISTINCT Activity) = 
+(
+   SELECT COUNT(DISTINCT Activity) FROM Logs
+);
+
+
+# 9 What are the Constraints in SQL?
+Constraints are used to specify the rules concerning data in the table. It can be applied for single or multiple fields in an SQL table during the creation of the table or after creating using the ALTER TABLE command. The constraints are:
+
+NOT NULL – Restricts NULL value from being inserted into a column.
+CHECK – Verifies that all values in a field satisfy a condition.
+DEFAULT – Automatically assigns a default value if no value has been specified for the field.
+UNIQUE – Ensures unique values are inserted into the field.
+INDEX – Indexes a field providing faster retrieval of records.
+PRIMARY KEY – Uniquely identifies each record in a table.
+FOREIGN KEY – Ensures referential integrity for a record in another table.
+
+# 10 How do the SQL commands flow at the back end?
+Order of execution for an SQL query
+
+1) FROM, including JOINs
+2) WHERE
+3) GROUP BY
+4) HAVING
+5) WINDOW Functions
+6) SELECT
+7) DISTINCT
+8) UNION
+9) ORDER BY
+10) LIMIT AND OFFSET
